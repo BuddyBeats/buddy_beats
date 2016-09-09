@@ -10,7 +10,7 @@ class Board extends Component {
     //150px column width is set on Box.js
     let boxes = [];
     let numrows = 4;
-    let numcols = 4;
+    let numcols = 8;
     let boardWidth = (numcols * 150).toString();
     
     let boardStyle = {

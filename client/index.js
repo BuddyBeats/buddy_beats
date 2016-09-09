@@ -10,11 +10,11 @@ class App extends Component {
     this.state = {
       username: 'funkmaster',
       board: [
-        [1,0,0,0,1,1,1,1],
-        [0,0,1,0,0,0,0,0],
+        [1,0,0,0,1,0,0,0],
+        [0,0,1,0,0,0,1,0],
         [0,0,0,0,0,0,0,0],
-        [0,1,0,1,1,1,1,1]
-        ]
+        [0,1,0,1,0,1,0,1]
+      ]
     }
     this.toggle = this.toggle.bind(this);
   }

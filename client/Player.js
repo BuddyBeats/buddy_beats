@@ -39,21 +39,20 @@ class Player extends Component {
     this.setState({
       bufferList: bufferList
     }, () => {
-      if (this.state.looping) {
+      if(this.state.looping){
         this.playLoop(bufferList, this.state.bpm, this.props.board);
       }
   })
-  }
+}
 
 //Plays loop.  input is a buffer list of sounds and a speed variable.
 //BPM is beats per minute
   playLoop(bufferList, bpm, board, loop = 0) {
-    let rowLength = 4;
+    let rowLength = 8;
     let buffLen = bufferList.length;
     let speedRatio = bpm / 60;
     //this is where the loop will live
-    for (var i = 0; i < 4; i++) {
-      console.log(i / speedRatio)
+    for (var i = 0; i < 8; i++) {
       if (board[0][i % rowLength]) {
         this.playSound(bufferList[0], i / speedRatio);
       }
@@ -71,8 +70,8 @@ class Player extends Component {
     if (this.state.looping) {
       //Loop + 4 is hard-coded for a 4-column board
       setTimeout(() => {
-        this.playLoop(bufferList, bpm, board, loop + 4);
-      }, 1500) //this value is a function of the BPM. If you want to change the bpm, you'll have to update this value
+        this.playLoop(bufferList, bpm, board, loop + 8);
+      }, 3000) //this value is a function of the BPM. If you want to change the bpm, you'll have to update this value
     }
 
   }
