@@ -7,10 +7,10 @@ class App extends Component {
     super();
     this.state = {
       board: [
-        [1,0,0,0],
-        [0,0,1,0],
-        [0,0,0,0],
-        [0,1,0,1]
+        [1,0,0,0,1,0,0,0],
+        [0,0,1,0,0,0,1,0],
+        [0,0,0,0,0,0,0,0],
+        [0,1,0,1,0,1,0,1]
       ]
     }
     this.toggle = this.toggle.bind(this);
