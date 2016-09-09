@@ -1,0 +1,40 @@
+{
+  "name": "buddy_beats",
+  "version": "1.0.0",
+  "description": "An online collaborative drum sequencer",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server/server.js",
+    "build": "./node_modules/.bin/webpack -w",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yantonsoup/buddy_beats.git"
+  },
+  "keywords": [
+    "awesome"
+  ],
+  "author": "Yaniv, Dana, Stephen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yantonsoup/buddy_beats/issues"
+  },
+  "homepage": "https://github.com/yantonsoup/buddy_beats#readme",
+  "dependencies": {
+    "babel-core": "^6.14.0",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.14.0",
+    "babel-preset-react": "^6.11.1",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "jquery": "^3.1.0",
+    "mongodb": "^2.2.9",
+    "mongoose": "^4.6.0",
+    "nodemon": "^1.10.2",
+    "path": "^0.12.7",
+    "react": "^15.3.1",
+    "react-dom": "^15.3.1",
+    "webpack": "^1.13.2"
+  }
+}
