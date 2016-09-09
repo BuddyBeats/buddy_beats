@@ -70,7 +70,11 @@ BufferLoader.prototype.load = function() {
 	  bufferLoader = new BufferLoader(
 	    context,
 	    [
-	      './samples/kick.wav'
+	      './samples/kick.wav',
+	      './samples/clap.wav',
+	      './samples/snare.wav',
+	      './samples/hihat.wav'
+
 	    ],
 	    finishedLoading
 	    );
@@ -81,10 +85,40 @@ BufferLoader.prototype.load = function() {
 	function finishedLoading(bufferList) {
 	  // Create two sources and play them both together.
 	  var source1 = context.createBufferSource();
+	  var source2 = context.createBufferSource();
+	  var source3 = context.createBufferSource();
+	  var source4 = context.createBufferSource();
 	  source1.buffer = bufferList[0];
+	  source2.buffer = bufferList[1];
+	  source3.buffer = bufferList[2];
+	  source4.buffer = bufferList[3];
 
 	  source1.connect(context.destination);
+	  source2.connect(context.destination);
+	  source3.connect(context.destination);
+	  source4.connect(context.destination);
 	  source1.start(0);
+	  source2.start(1);
+	  source3.start(2);
+	  source4.start(3);
+	  	  var source1 = context.createBufferSource();
+	  var source2 = context.createBufferSource();
+	  var source3 = context.createBufferSource();
+	  var source4 = context.createBufferSource();
+	  source1.buffer = bufferList[0];
+	  source2.buffer = bufferList[1];
+	  source3.buffer = bufferList[2];
+	  source4.buffer = bufferList[3];
+
+	  source1.connect(context.destination);
+	  source2.connect(context.destination);
+	  source3.connect(context.destination);
+	  source4.connect(context.destination);
+	  source1.start(4);
+	  source2.start(5);
+	  source3.start(6);
+	  source4.start(7);
+
 	}
 
 
