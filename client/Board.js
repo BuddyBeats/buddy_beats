@@ -5,6 +5,7 @@ import Box from './Box';
 class Board extends Component {
 
   render() {
+
     //numcols (# of columns) * 150px width = boardWidth
     //150px column width is set on Box.js
     let boxes = [];
