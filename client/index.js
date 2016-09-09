@@ -7,10 +7,10 @@ class App extends Component {
     super();
     this.state = {
       board: [
+        [1,0,0,0],
+        [0,0,1,0],
         [0,0,0,0],
-        [0,0,0,0],
-        [0,0,0,0],
-        [0,0,0,0]
+        [0,1,0,1]
       ]
     }
     this.toggle = this.toggle.bind(this);
@@ -30,7 +30,7 @@ class App extends Component {
 			<div>
 				<h1>Buddy Beats</h1>
 				<Board boxState = {this.state.board} toggle = {this.toggle}/>
-        <Player />
+        <Player board = {this.state.board} />
 			</div>
 		)
   }

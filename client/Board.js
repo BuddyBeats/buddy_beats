@@ -13,7 +13,6 @@ class Board extends Component {
     let col1 = 1;
     let col2 = 2;
     let col3 = 3;
-    console.log("toggle:",this.props.toggle);
 		return (
 
 			<div>
