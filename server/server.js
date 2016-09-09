@@ -3,14 +3,19 @@ var express = require('express');
 var path = require('path');
 
 const userController = require('./controllers/userController');
+const boardController = require('./controllers/boardController');
 
 var app = express();
 
 const mongoose = require('mongoose');
-const mongoURI = 'mongodb://localhost/buddydb';
-const Schema = mongoose.Schema;
 
-mongoose.createConnection(mongoURI);
+
+
+const Board = require('./models/boardModel');
+
+
+const mongoURI = 'mongodb://localhost/buddydb';
+mongoose.connect(mongoURI);
 mongoose.connection.once('open', () => {
   console.log('Connected with MongoDB ORM');
 });
@@ -27,16 +32,19 @@ app.get('/', function(req, res) {
 });
 
 
-app.post('/saveBoard', boardController.saveBoard, function(req,res,next){
-    console.log('you made a post request to /login');
+app.post('/saveBoard', boardController.saveBoard , function(req,res,next){
+    
     res.status(200);
     res.send();
 });
 
-app.get('/returnBoards', function(req,res,next){
-    console.log('you made a post request to /save');
+app.get('/getBoards', boardController.getBoards, function(req,res,next){
+   
+    console.log('you successfully retrieved boards');
+    console.log(res.boards)
+
     res.status(200);
-    res.send();
+    res.send(res.boards);
 });
 
 
