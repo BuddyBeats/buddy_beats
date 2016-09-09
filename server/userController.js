@@ -7,15 +7,24 @@ const userController = {};
 
 userController.createUser = (request, response, next) => {
   // if (typeof req.body.username === 'string' && typeof req.body.password === 'string') {
-  console.log(request.body)
-
+  console.log('hit create user route here is body:', request.body)
+  console.log('headers ', request.headers)
   //create new user using our USER model that we exported
-  const user = new User(request.body);
 
   //then save it to the database
-  User.create(user)
-  .then(() => next())
-  .catch(() => console.log('you errored out when creating a new user'));
+  // if (typeof req.body.username === 'string' && typeof req.body.password === 'string') {
+  const user = new User(request.body);
+  User.create(user, (err) => {
+      console.log('error')
+  });
+
+  next()
+  
+  // }
+    // const user = new User(request.body);
+//   User.create(user)
+//   .then(() => next())
+//   .catch(() => console.log('you errored out when creating a new user'));
 };
 //
 

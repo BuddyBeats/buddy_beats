@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
   username: { type: String }, //,required: true, unique: true
-  board: { type: Array }, //, required: true 
+  board: { type: String }, //, required: true 
 });
 
 

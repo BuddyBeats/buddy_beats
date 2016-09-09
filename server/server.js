@@ -7,7 +7,9 @@ var app = express();
 const userController = require('./userController');
 
 app.use(express.static(__dirname +'./../')); //serves the index.html
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+// app.use(bodyParser.json())
+//
 // // app.use(express.urlencoded());
 // // app.set('port', process.env.PORT || 8080);
 
@@ -17,7 +19,7 @@ app.get('/', function(req, res) {
 });
 
 app.post('/save', userController.createUser, function(req,res,next){
-    console.log('you made a post request to /');
+    console.log('you made a post request to /save');
     res.status(200);
     res.send();
 });
