@@ -2,16 +2,32 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Board from './Board';
 import Player from './Player';
+import FormSave from './FormSave';
+
 class App extends Component {
   constructor() {
     super();
     this.state = {
       board: [
-        [1,0,0,0],
-        [0,0,1,0],
-        [0,0,0,0],
-        [0,1,0,1]
-      ]
+        [1,0,0,0,1,1,1,1],
+        [0,0,1,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,1,0,1,1,1,1,1]
+      ],
+      otherBoards: {
+        boardOne: [
+          [0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0]
+        ],
+        boardTwo: [
+          [1,1,1,1,1,1,1,1],
+          [1,1,1,1,1,1,1,1],
+          [1,1,1,1,1,1,1,1],
+          [1,1,1,1,1,1,1,1]
+        ]
+      }
     }
     this.toggle = this.toggle.bind(this);
   }
@@ -25,10 +41,16 @@ class App extends Component {
       this.setState({board: copy});
     }
   }
+  handleSubmit(){
+    console.log('this is the handleSubmit func');
+  }
   render() {
 		return (
 			<div>
 				<h1>Buddy Beats</h1>
+        <FormSave onSubmit = {this.handleSubmit}/>
+
+
 				<Board boxState = {this.state.board} toggle = {this.toggle}/>
         <Player board = {this.state.board} />
 			</div>
