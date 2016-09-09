@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Board from './Board';
-
+import Player from './Player';
 class App extends Component {
   constructor() {
     super();
     this.state = {
       board: [
+        [1,0,0,0],
+        [0,0,1,0],
         [0,0,0,0],
-        [0,0,0,0],
-        [0,0,0,0],
-        [0,0,0,0]
+        [0,1,0,1]
       ]
     }
     this.toggle = this.toggle.bind(this);
@@ -30,6 +30,7 @@ class App extends Component {
 			<div>
 				<h1>Buddy Beats</h1>
 				<Board boxState = {this.state.board} toggle = {this.toggle}/>
+        <Player board = {this.state.board} />
 			</div>
 		)
   }
