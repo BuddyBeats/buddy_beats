@@ -8,7 +8,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      username: 'funkmaster',
+      boardname: '',
       board: [
         [1,0,0,0,1,0,0,0],
         [0,0,1,0,0,0,1,0],
@@ -17,6 +17,8 @@ class App extends Component {
       ]
     }
     this.toggle = this.toggle.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleBoardNameChange = this.handleBoardNameChange.bind(this);
   }
 
   //alters color of each button on click
@@ -32,17 +34,29 @@ class App extends Component {
   }
 
   //save state of board
-  handleSubmit(){
-    $.post('/setBoard',this.state);
+  handleSubmit(e){
+    e.preventDefault();
+    
+    $.post('/saveBoard',{name: this.state.boardname, board: this.state.board}, function(){
+      console.log('successful save');
+    });
+  }
+  handleBoardNameChange(e){
+    this.setState({boardname: e.target.value})
+  }
+  componentDidMount(){
+    $.get('/getBoards', function(result){
+      console.log('allboards:', result);
+    });
   }
 
   render() {
 		return (
 			<div>
 				<h1>Buddy Beats</h1>
-        <form className = "saveform" >
-          <input type="text" placeholder="name of board" />
-          <input type="submit" value="Save Board" required = {true} onSubmit = {this.handleSubmit}/>
+        <form className = "saveform" onSubmit = {this.handleSubmit}>
+          <input type="text" value = {this.state.boardname} placeholder="name of board" onChange = {this.handleBoardNameChange}/>
+          <input type="submit" placeholder="Save Board" required = {true} />
         </form>
 
 				<Board boxState = {this.state.board} toggle = {this.toggle}/>
