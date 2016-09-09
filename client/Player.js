@@ -39,11 +39,11 @@ class Player extends Component {
     this.setState({
       bufferList: bufferList
     }, () => {
-      if (this.state.looping) {
+      if(this.state.looping){
         this.playLoop(bufferList, this.state.bpm, this.props.board);
-       }
-    })
-  }
+      }
+  })
+}
 
 //Plays loop.  input is a buffer list of sounds and a speed variable.
 //BPM is beats per minute
