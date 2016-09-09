@@ -9,8 +9,8 @@ class Box extends Component {
       width: "150px"
     }
 		return (
-			<button style = {boxStyle}>
-        {this.props.boxState[this.props.row][this.props.col]}
+			<button style = {boxStyle} onClick={this.props.toggle.bind(null,this.props.row, this.props.col)}>
+        {this.props.boxState[this.props.row][this.props.col] }
 				
 				
 			</button>

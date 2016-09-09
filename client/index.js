@@ -7,19 +7,29 @@ class App extends Component {
     super();
     this.state = {
       board: [
-        [1,2,3,4],
-        [5,6,7,8],
-        [9,1,0,1],
-        [13,1,0,1]
+        [0,0,0,0],
+        [0,0,0,0],
+        [0,0,0,0],
+        [0,0,0,0]
       ]
+    }
+    this.toggle = this.toggle.bind(this);
+  }
+  toggle(row, col){
+    var copy = this.state.board.slice();
+    if (copy[row][col] === 0) {
+      copy[row][col] = 1;
+      this.setState({board: copy});
+    } else {
+      copy[row][col] = 0;
+      this.setState({board: copy});
     }
   }
   render() {
-
 		return (
 			<div>
 				<h1>Buddy Beats</h1>
-				<Board boxState = {this.state.board}/>
+				<Board boxState = {this.state.board} toggle = {this.toggle}/>
 			</div>
 		)
   }
