@@ -29,6 +29,7 @@ class Player extends Component {
     this.setState({
       context: context,
       looping: true,
+      bpm: 160
       }, bufferLoader.load()) // bufferLoader must be a callback to this state change
 
     // let sampleBoard = this.props.board;
@@ -38,7 +39,7 @@ class Player extends Component {
     this.setState({
       bufferList: bufferList
     }, () => {
-      this.playLoop(bufferList, 160, this.props.board)});
+      this.playLoop(bufferList, this.state.bpm, this.props.board)});
   }
 
 //Plays loop.  input is a buffer list of sounds and a speed variable.
@@ -91,7 +92,7 @@ class Player extends Component {
     this.setState({
       looping: true
     }, () => {
-      this.playLoop(this.state.bufferList, 160, this.props.board)
+      this.playLoop(this.state.bufferList, this.state.bpm, this.props.board)
     })
   }
 

@@ -5,36 +5,26 @@ import Box from './Box';
 class Board extends Component {
 
   render() {
-    let row0 = 0;
-    let row1 = 1;
-    let row2 = 2;
-    let row3 = 3;
-    let col0 = 0;
-    let col1 = 1;
-    let col2 = 2;
-    let col3 = 3;
-		return (
 
-			<div>
-				<Box boxState = {this.props.boxState} row = {row0} col = {col0} toggle = {this.props.toggle}/>
-        <Box boxState = {this.props.boxState} row = {row0} col = {col1} toggle = {this.props.toggle}/>
-        <Box boxState = {this.props.boxState} row = {row0} col = {col2} toggle = {this.props.toggle}/>
-        <Box boxState = {this.props.boxState} row = {row0} col = {col3} toggle = {this.props.toggle}/>
-        <br></br>
-        <Box boxState = {this.props.boxState} row = {row1} col = {col0} toggle = {this.props.toggle}/>
-        <Box boxState = {this.props.boxState} row = {row1} col = {col1} toggle = {this.props.toggle}/>
-        <Box boxState = {this.props.boxState} row = {row1} col = {col2} toggle = {this.props.toggle}/>
-        <Box boxState = {this.props.boxState} row = {row1} col = {col3} toggle = {this.props.toggle}/>
-        <br></br>
-        <Box boxState = {this.props.boxState} row = {row2} col = {col0} toggle = {this.props.toggle}/>
-        <Box boxState = {this.props.boxState} row = {row2} col = {col1} toggle = {this.props.toggle}/>
-        <Box boxState = {this.props.boxState} row = {row2} col = {col2} toggle = {this.props.toggle}/>
-        <Box boxState = {this.props.boxState} row = {row2} col = {col3} toggle = {this.props.toggle}/>
-        <br></br>
-        <Box boxState = {this.props.boxState} row = {row3} col = {col0} toggle = {this.props.toggle}/>
-        <Box boxState = {this.props.boxState} row = {row3} col = {col1} toggle = {this.props.toggle}/>
-        <Box boxState = {this.props.boxState} row = {row3} col = {col2} toggle = {this.props.toggle}/>
-        <Box boxState = {this.props.boxState} row = {row3} col = {col3} toggle = {this.props.toggle}/>
+    //numcols (# of columns) * 150px width = boardWidth
+    //150px column width is set on Box.js
+    let boxes = [];
+    let numrows = 4;
+    let numcols = 4;
+    let boardWidth = (numcols * 150).toString();
+    
+    let boardStyle = {
+      width: boardWidth + 'px'
+    };
+
+    for (var r = 0; r < numrows; r++){
+      for (var c = 0; c < numcols; c++){
+        boxes.push(<Box boxState = {this.props.boxState} row = {r} col = {c} toggle = {this.props.toggle}/>); 
+      }   
+    }
+		return (
+			<div style = {boardStyle}>
+        {boxes}
 			</div>
 		)
   }

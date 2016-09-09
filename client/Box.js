@@ -4,14 +4,14 @@ import { render } from 'react-dom';
 class Box extends Component {
 
   render() {
+    var colorsArr = ["#83BBBC", "EEB937"];
     var boxStyle = {
       height: "150px",
-      width: "150px"
+      width: "150px",
+      backgroundColor: colorsArr[this.props.boxState[this.props.row][this.props.col] ]
     }
 		return (
-			<button style = {boxStyle} onClick={this.props.toggle.bind(null,this.props.row, this.props.col)}>
-        {this.props.boxState[this.props.row][this.props.col] }
-				
+			<button style = {boxStyle} className = 'btn' onClick={this.props.toggle.bind(null,this.props.row, this.props.col)}>
 				
 			</button>
 		)
