@@ -40,7 +40,7 @@ app.post('/saveBoard', boardController.saveBoard , function(req,res,next){
 
 app.get('/getBoards', boardController.getBoards, function(req,res,next){
    
-    console.log('you successfully retrieved boards');
+    console.log('yo');
     console.log(res.boards)
 
     res.status(200);
