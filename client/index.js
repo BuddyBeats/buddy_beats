@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Board from './Board';
-
+import Player from './Player';
 class App extends Component {
   constructor() {
     super();
@@ -30,6 +30,7 @@ class App extends Component {
 			<div>
 				<h1>Buddy Beats</h1>
 				<Board boxState = {this.state.board} toggle = {this.toggle}/>
+        <Player />
 			</div>
 		)
   }
