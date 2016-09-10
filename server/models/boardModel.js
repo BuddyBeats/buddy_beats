@@ -3,8 +3,8 @@ const Schema = mongoose.Schema;
 
 
 const boardSchema = new Schema({
-  name: { type: String },// ,required: true, unique: true
-  board: { type: Array, }, // required: true 
+  name: { type: String ,required: true, unique: true },
+  board: { type: Array, required: true }
 });
 
 

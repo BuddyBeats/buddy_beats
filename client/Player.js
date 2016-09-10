@@ -7,6 +7,7 @@ class Player extends Component {
 		super();
     this.toggleStop = this.toggleStop.bind(this);
     this.toggleStart = this.toggleStart.bind(this);
+
     this.state = {
       looping: false,
       bpm: 160
@@ -16,10 +17,11 @@ class Player extends Component {
 //Plays loop.  input is a buffer list of sounds and a speed variable.
 //BPM is beats per minute
   playLoop(bufferList, bpm, board, loop = 0) {
+    //hard coded for 8 columns.  If you want to add more columns, you have to change this
     let rowLength = 8;
     let buffLen = bufferList.length;
     let speedRatio = bpm / 60;
-    //this is where the loop will live
+    // the terminating case for i is hard-coded for 8 columns
     for (var i = 0; i < 8; i++) {
       /* These MUST be "==" because loading boards come back with 
         the values in strings rather than numbers...
@@ -43,9 +45,7 @@ class Player extends Component {
       setTimeout(() => {
           this.playLoop(bufferList, bpm, this.props.board, loop + 8);
       }, 3000) 
-
     }
-    
   }
 
   playSound(buffer, time) {
@@ -54,7 +54,9 @@ class Player extends Component {
     source.connect(context.destination);
     source.start(context.currentTime + time);
   }
-	
+
+  //toggle stop terminates the loop.  Audio sounds cued up will continue to play.
+  //Will terminate at the end of the loop playing.
   toggleStop() {
     this.setState({
       looping: false
@@ -75,7 +77,7 @@ class Player extends Component {
       <button onClick={this.toggleStop}>click here to stop</button>
 			<button onClick={this.toggleStart}>click here to start</button>
 			</div>
-			)
+		)
 	}
 }
 

@@ -12,7 +12,6 @@ class Selector extends Component {
           return <option key={i} value={i}>{board.name}</option>
         })
     }
-    console.log("boards in selector", this.props.boards)
 		return (
 			<select defaultValue={"test"} onChange={this.props.changeBoard}>
         <option value={"test"}>default</option>

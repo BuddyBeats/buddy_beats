@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Board from './Board';
 import Player from './Player';
+
 import Selector from './Selector';
+
+
+var socket = io();
 
 
 class App extends Component {
@@ -11,20 +15,26 @@ class App extends Component {
     this.state = {
       boardname: '',
       board: [
-        [1,0,0,0,1,0,0,0],
-        [0,0,1,0,0,0,1,0],
         [0,0,0,0,0,0,0,0],
-        [0,1,0,1,0,1,0,1]
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0]
       ]
     }
     this.toggle = this.toggle.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleBoardNameChange = this.handleBoardNameChange.bind(this);
     this.changeBoard = this.changeBoard.bind(this);
+    this.catchToggle = this.catchToggle.bind(this);
+    this.catchServerBoard = this.catchServerBoard.bind(this);
+
   }
 
   //alters color of each button on click
   toggle(row, col){
+   
+    //emit 'toggle' event on click of each button, passing in the row & col of the button clicked and its value
+    socket.emit('toggle', [row, col, this.state.board[row][col]]);
     var copy = this.state.board.slice();
     if (copy[row][col] === 0) {
       copy[row][col] = 1;
@@ -38,15 +48,21 @@ class App extends Component {
   //save state of board
   handleSubmit(e){
     e.preventDefault();
-    this.setState({boardname: ""})
-    $.post('/saveBoard',{name: this.state.boardname, board: this.state.board}, function(){
+    var that = this;
+    $.post('/saveBoard',{name: that.state.boardname, board: that.state.board}, function(){
       console.log('successful save');
+     that.setState({boardname: ""})
+
     });
   }
-  handleBoardNameChange(e){
-    this.setState({boardname: e.target.value})
-  }
+
+
+
   componentDidMount(){
+    //this makes a request to board on server
+    socket.emit('initialclientload');
+    socket.on('sendserverboard', this.catchServerBoard);
+    socket.on('togglereturn', this.catchToggle);
     $.get('/getBoards', (result) => {
       var validBoards = result
                         .map((boardObj) => {
@@ -60,12 +76,30 @@ class App extends Component {
                           return (boardObj.board.length > 0);
                         })
       this.setState({otherBoards: validBoards});
-
     });
+
+  }
+
+  handleBoardNameChange(e) {
+    this.setState({boardname: e.target.value})
+  }
+  catchServerBoard(serverBoard){
+    this.setState({board: serverBoard});
+  }
+
+
+  catchToggle(returnarr){
+    //sets the state to update value of clicked button. returnarr is [row,col,val]
+    var copy = this.state.board.slice();
+    var returnRow = returnarr[0];
+    var returnCol = returnarr[1];
+    var returnVal = returnarr[2];
+    copy[returnRow][returnCol] = (returnVal === 0) ? 1 : 0;
+    this.setState({board: copy});
+
   }
 
   changeBoard(e) {
-    
     var boardToSet = this.state.otherBoards[e.target.value]
     this.setState({
       board: boardToSet.board,
@@ -84,13 +118,11 @@ class App extends Component {
 				<h1>Buddy Beats</h1>
         <Selector boards={this.state.otherBoards} changeBoard={this.changeBoard}> </Selector>
         <form className = "saveform" onSubmit = {this.handleSubmit}>
-          <input type="text" value = {this.state.boardname} placeholder="Name your board!" onChange = {this.handleBoardNameChange}/>
+          <input type="text" required={true} value={this.state.boardname} onChange={this.handleBoardNameChange} placeholder="Name your board!" />
           <input type="submit" placeholder="Save Board" required = {true} />
         </form>
-
-				<Board boxState = {this.state.board} toggle = {this.toggle}/>
+				<Board boxState = {this.state.board} toggle ={this.toggle}/>
         <Player board={this.state.board} />
-        <button onClick={this.changeBoard}>click to change board</button>
 			</div>
 		)
   }
