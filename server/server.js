@@ -1,11 +1,22 @@
 var bodyParser = require('body-parser');
 var express = require('express');
 var path = require('path');
-
 var app = express();
 var http = require('http').Server(app);
-
 var io = require('socket.io')(http);
+const mongoose = require('mongoose');
+const Board = require('./models/boardModel');
+const userController = require('./controllers/userController');
+const boardController = require('./controllers/boardController');
+const mongoURI = 'mongodb://localhost/buddydb';
+mongoose.connect(mongoURI);
+mongoose.connection.once('open', () => {
+  console.log('Connected with MongoDB ORM');
+});
+
+
+
+
 
 serverBoard = [
         [0,0,0,0,0,0,0,0],
@@ -29,6 +40,21 @@ function toggleServer(arr){
     serverBoard[arr[0]][arr[1]] = 0;
   }
 }
+
+app.post('/saveBoard', boardController.saveBoard , function(req,res,next){
+    
+    res.status(200);
+    res.send();
+});
+
+app.get('/getBoards', boardController.getBoards, function(req,res,next){
+   
+    console.log('yo');
+    console.log(res.boards)
+
+    res.status(200);
+    res.send(res.boards);
+});
 
 //connects user to socket
 io.on('connection', function(socket){
