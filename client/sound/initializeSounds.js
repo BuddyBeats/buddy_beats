@@ -12,9 +12,9 @@ function init() {
     [
     //These are the drum samples
       './samples/kick.wav',
-      './samples/clap.wav',
-      './samples/snare.wav',
-      './samples/hihat.wav'
+      './samples/donk.wav',
+      './samples/snare2.wav',
+      './samples/hihat2.wav'
 
     ],
     finishedLoading
