@@ -1,88 +1,62 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
+var timeouts = [];
 
 class Player extends Component {
 	constructor() {
 		super();
     this.toggleStop = this.toggleStop.bind(this);
     this.toggleStart = this.toggleStart.bind(this);
-	}
 
-	componentDidMount() {
-		var context;
-		var bufferLoader;
-  	window.AudioContext = window.AudioContext || window.webkitAudioContext;
-    context = new AudioContext();
-    bufferLoader = new BufferLoader(
-      context,
-      [
-      //These are the drum samples
-        './samples/kick.wav',
-        './samples/clap.wav',
-        './samples/snare.wav',
-        './samples/hihat.wav'
-
-      ],
-      this.finishedLoading.bind(this)
-    );
-
-    this.setState({
-      context: context,
+    this.state = {
       looping: false,
       bpm: 160
-      }, bufferLoader.load()) // bufferLoader must be a callback to this state change
-
-    // let sampleBoard = this.props.board;
-  }
-
-  finishedLoading(bufferList) {
-    this.setState({
-      bufferList: bufferList
-    }, () => {
-      if(this.state.looping){
-        this.playLoop(bufferList, this.state.bpm, this.props.board);
-      }
-  })
-}
+    }
+	}
 
 //Plays loop.  input is a buffer list of sounds and a speed variable.
 //BPM is beats per minute
   playLoop(bufferList, bpm, board, loop = 0) {
+    //hard coded for 8 columns.  If you want to add more columns, you have to change this
     let rowLength = 8;
     let buffLen = bufferList.length;
     let speedRatio = bpm / 60;
-    //this is where the loop will live
+    // the terminating case for i is hard-coded for 8 columns
     for (var i = 0; i < 8; i++) {
-      if (board[0][i % rowLength]) {
+      /* These MUST be "==" because loading boards come back with 
+        the values in strings rather than numbers...
+      */
+      if (board[0][i % rowLength] == 1) {
         this.playSound(bufferList[0], i / speedRatio);
       }
-      if (board[1][i % rowLength]) {
+      if (board[1][i % rowLength] == 1) {
         this.playSound(bufferList[1], i / speedRatio);
       }
-      if (board[2][i % rowLength]) {
+      if (board[2][i % rowLength] == 1) {
         this.playSound(bufferList[2], i / speedRatio);
       }
-      if (board[3][i % rowLength]) {
+      if (board[3][i % rowLength] == 1) {
         this.playSound(bufferList[3], i / speedRatio);
       }
     }
 
     if (this.state.looping) {
-      //Loop + 4 is hard-coded for a 4-column board
+      //params and timeout hardcoded for 160 bpm with 8 columns.
       setTimeout(() => {
-        this.playLoop(bufferList, bpm, board, loop + 8);
-      }, 3000) //this value is a function of the BPM. If you want to change the bpm, you'll have to update this value
+          this.playLoop(bufferList, bpm, this.props.board, loop + 8);
+      }, 3000) 
     }
-
   }
 
   playSound(buffer, time) {
-    var source = this.state.context.createBufferSource();
+    var source = context.createBufferSource();
     source.buffer = buffer;
-    source.connect(this.state.context.destination);
-    source.start(this.state.context.currentTime + time);
+    source.connect(context.destination);
+    source.start(context.currentTime + time);
   }
-	
+
+  //toggle stop terminates the loop.  Audio sounds cued up will continue to play.
+  //Will terminate at the end of the loop playing.
   toggleStop() {
     this.setState({
       looping: false
@@ -90,11 +64,10 @@ class Player extends Component {
   }
 
   toggleStart() {
-    if (this.state.looping) return;
     this.setState({
       looping: true
     }, () => {
-      this.playLoop(this.state.bufferList, this.state.bpm, this.props.board)
+      this.playLoop(bufferList, this.state.bpm, this.props.board)
     })
   }
 
@@ -104,7 +77,7 @@ class Player extends Component {
       <button onClick={this.toggleStop}>click here to stop</button>
 			<button onClick={this.toggleStart}>click here to start</button>
 			</div>
-			)
+		)
 	}
 }
 

@@ -1,19 +1,13 @@
 var bodyParser = require('body-parser');
 var express = require('express');
 var path = require('path');
-
+var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+const mongoose = require('mongoose');
+const Board = require('./models/boardModel');
 const userController = require('./controllers/userController');
 const boardController = require('./controllers/boardController');
-
-var app = express();
-
-const mongoose = require('mongoose');
-
-
-
-const Board = require('./models/boardModel');
-
-
 const mongoURI = 'mongodb://localhost/buddydb';
 mongoose.connect(mongoURI);
 mongoose.connection.once('open', () => {
@@ -21,16 +15,31 @@ mongoose.connection.once('open', () => {
 });
 
 
+
+
+
+serverBoard = [
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0]
+      ];
+
 app.use(express.static(__dirname +'./../')); //serves the index.html
 app.use(bodyParser.urlencoded({extended: true}));
-// app.use(bodyParser.json())
 
 // respond with "hello world" when a GET request is made to the homepage
 app.get('/', function(req, res) {
-    console.log('you hit / get route with body of: ' )
-    res.send('hello world');
+  res.send('hello world');
 });
 
+function toggleServer(arr){
+	if (serverBoard[arr[0]][arr[1]] === 0) {
+      serverBoard[arr[0]][arr[1]] = 1;
+  } else {
+    serverBoard[arr[0]][arr[1]] = 0;
+  }
+}
 
 app.post('/saveBoard', boardController.saveBoard , function(req,res,next){
     
@@ -47,16 +56,24 @@ app.get('/getBoards', boardController.getBoards, function(req,res,next){
     res.send(res.boards);
 });
 
+//connects user to socket
+io.on('connection', function(socket){
+  //listens for first time client is rendered & sends serverBoard state to everyone
+	socket.on('initialclientload', function(){
+		socket.emit('sendserverboard',serverBoard);
+		socket.broadcast.emit('sendserverboard',serverBoard);
+	});
 
-// app.get('/save', function(req,res,next){
-//     console.log('you made a post request to /save');
-//     res.status(200);
-//     res.send();
-// });
-
+  //listens for 'toggle' event, grabs the array of the row, col, and val that were passed in, and broadcasts a 'togglereturn' event passing the array to the listeners
+  socket.on('toggle', function(arr){
+  	toggleServer(arr);
+    socket.broadcast.emit('togglereturn', arr);
+  });
+  console.log('a user connnected');
+});
 
 
 //THIS HAS TO BE DOWN HERE OMG THAT WAS MY PROBLEM ALL ALONG
-app.listen(3000,function(){
+http.listen(3000,function(){
   console.log("Started on PORT 3000");
-})
+});
