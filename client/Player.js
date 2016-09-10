@@ -7,7 +7,8 @@ class Player extends Component {
     this.toggleStop = this.toggleStop.bind(this);
     this.toggleStart = this.toggleStart.bind(this);
 	}
-
+  //be careful opening up more than 1 audio context per page refresh.
+  //  This can cause some pretty awful audio bugs.
 	componentDidMount() {
 		var context;
 		var bufferLoader;
@@ -32,7 +33,6 @@ class Player extends Component {
       bpm: 160
       }, bufferLoader.load()) // bufferLoader must be a callback to this state change
 
-    // let sampleBoard = this.props.board;
   }
 
   finishedLoading(bufferList) {
@@ -48,11 +48,13 @@ class Player extends Component {
 //Plays loop.  input is a buffer list of sounds and a speed variable.
 //BPM is beats per minute
   playLoop(bufferList, bpm, board, loop = 0) {
+    //hard coded for 8 columns.  If you want to add more columns, you have to change this
     let rowLength = 8;
     let buffLen = bufferList.length;
     let speedRatio = bpm / 60;
-    //this is where the loop will live
+    // the terminating case for i is hard-coded for 8 columns
     for (var i = 0; i < 8; i++) {
+      //If you add another row, you have to add another if loop here.
       if (board[0][i % rowLength]) {
         this.playSound(bufferList[0], i / speedRatio);
       }
@@ -68,10 +70,13 @@ class Player extends Component {
     }
 
     if (this.state.looping) {
-      //Loop + 4 is hard-coded for a 4-column board
+      //Loop + 8 is hard-coded for an 8-column board
+      //Be very careful with the number passed in to setTimeout.
+      //Easy to blow the stack and trigger hundreds of samples per second.
       setTimeout(() => {
         this.playLoop(bufferList, bpm, board, loop + 8);
-      }, 3000) //this value is a function of the BPM. If you want to change the bpm, you'll have to update this value
+      }, 3000) //this value is a function of the BPM. If you want to change the bpm,
+              // you'll have to update this value using math or your ear.
     }
 
   }
@@ -82,7 +87,9 @@ class Player extends Component {
     source.connect(this.state.context.destination);
     source.start(this.state.context.currentTime + time);
   }
-	
+
+  //toggle stop terminates the loop.  Audio sounds cued up will continue to play.
+  //Will terminate at the end of the loop playing.
   toggleStop() {
     this.setState({
       looping: false
@@ -104,7 +111,7 @@ class Player extends Component {
       <button onClick={this.toggleStop}>click here to stop</button>
 			<button onClick={this.toggleStart}>click here to start</button>
 			</div>
-			)
+		)
 	}
 }
 
