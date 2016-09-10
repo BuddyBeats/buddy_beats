@@ -54,8 +54,9 @@ class App extends Component {
     $.post('/saveBoard',{name: that.state.boardname, board: that.state.board}, function(){
       console.log('successful save');
      that.setState({boardname: ""})
-
     });
+    this.refs.textinput.value = "";
+
   }
 
 
@@ -130,7 +131,7 @@ class App extends Component {
 				<h1>Buddy Beats</h1>
         <Selector dropdownValue={this.state.dropdownValue} boards={this.state.otherBoards} changeBoard={this.changeBoard}> </Selector>
         <form className = "saveform" onSubmit = {this.handleSubmit}>
-          <input type="text" required={true} value={this.state.boardname} onChange={this.handleBoardNameChange} placeholder="Name your board!" />
+          <input type="text" ref="textinput" required={true} onChange={this.handleBoardNameChange} placeholder="Name your board!" />
           <input type="submit" placeholder="Save Board" required = {true} />
         </form>
 				<Board boxState = {this.state.board} toggle ={this.toggle}/>
