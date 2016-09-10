@@ -54,6 +54,22 @@ class App extends Component {
     $.post('/saveBoard',{name: that.state.boardname, board: that.state.board}, function(){
       console.log('successful save');
      that.setState({boardname: ""})
+    }).then(() => {
+        socket.emit('updateDropdown');
+        $.get('/getBoards', (result) => {
+          var validBoards = result
+                            .map((boardObj) => {
+                              boardObj.board = boardObj.board.map((arr) => {
+                                return arr.map(Number)
+                              })
+                              return {
+                                name: boardObj.name, 
+                                board: boardObj.board}})
+                            .filter((boardObj) => {
+                              return (boardObj.board.length > 0);
+                            })
+        this.setState({otherBoards: validBoards});
+      });
     });
     this.refs.textinput.value = "";
 
@@ -71,6 +87,23 @@ class App extends Component {
     socket.emit('initialclientload');
     socket.on('sendserverboard', this.catchServerBoard);
     socket.on('togglereturn', this.catchToggle);
+    socket.on('initUpdateDropdown', () => {
+      $.get('/getBoards', (result) => {
+        var validBoards = result
+                        .map((boardObj) => {
+                          boardObj.board = boardObj.board.map((arr) => {
+                            return arr.map(Number)
+                          })
+                          return {
+                            name: boardObj.name, 
+                            board: boardObj.board}})
+                        .filter((boardObj) => {
+                          return (boardObj.board.length > 0);
+                        })
+        this.setState({otherBoards: validBoards});
+      });
+    })
+
     $.get('/getBoards', (result) => {
       var validBoards = result
                         .map((boardObj) => {
@@ -85,7 +118,6 @@ class App extends Component {
                         })
       this.setState({otherBoards: validBoards});
     });
-
   }
 
   handleBoardNameChange(e) {

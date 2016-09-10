@@ -79,6 +79,10 @@ io.on('connection', function(socket){
     dropdownValue = boardArray[2];
     socket.broadcast.emit('serverboardchanged', [serverBoard, serverBoardName, dropdownValue])
   })
+
+  socket.on('updateDropdown', function() {
+    socket.broadcast.emit('initUpdateDropdown')
+  })
 });
 
 
