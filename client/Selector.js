@@ -13,8 +13,8 @@ class Selector extends Component {
         })
     }
 		return (
-			<select defaultValue={"test"} onChange={this.props.changeBoard}>
-        <option value={"test"}>default</option>
+			<select value={this.props.dropdownValue} onChange={this.props.changeBoard}>
+        		<option value={this.props.boardname}>default</option>
 				{theOptions}
 			</select>
 
