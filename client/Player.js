@@ -76,12 +76,12 @@ class Player extends Component {
 			<div className = "buttonWrapper">
 
         <button onClick={this.toggleStop}>
-          <img src="../assets/Stop.svg" width="150" height="150"  />
+          <img src="../assets/Stop.svg" width="75" height="75"  />
         </button>
 
 
         <button onClick={this.toggleStart}>
-            <img src="../assets/Play.svg" width="150" height="150"  />
+            <img src="../assets/Play.svg" width="75" height="75"  />
         </button>
 
 			</div>
