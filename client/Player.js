@@ -6,44 +6,25 @@ class Player extends Component {
 		super();
     this.toggleStop = this.toggleStop.bind(this);
     this.toggleStart = this.toggleStart.bind(this);
+    this.state = {
+      looping: false,
+      bpm: 160
+    }
 	}
 
 	componentDidMount() {
-		var context;
-		var bufferLoader;
-  	window.AudioContext = window.AudioContext || window.webkitAudioContext;
-    context = new AudioContext();
-    bufferLoader = new BufferLoader(
-      context,
-      [
-      //These are the drum samples
-        './samples/kick.wav',
-        './samples/clap.wav',
-        './samples/snare.wav',
-        './samples/hihat.wav'
-
-      ],
-      this.finishedLoading.bind(this)
-    );
-
-    this.setState({
-      context: context,
-      looping: false,
-      bpm: 160
-      }, bufferLoader.load()) // bufferLoader must be a callback to this state change
-
-    // let sampleBoard = this.props.board;
+		console.log("buffer list", bufferList)
   }
 
-  finishedLoading(bufferList) {
-    this.setState({
-      bufferList: bufferList
-    }, () => {
-      if(this.state.looping){
-        this.playLoop(bufferList, this.state.bpm, this.props.board);
-      }
-  })
-}
+  // finishedLoading(bufferList) {
+  //   this.setState({
+  //     bufferList: bufferList
+  //   }, () => {
+  //     if(this.state.looping){
+  //       this.playLoop(bufferList, this.state.bpm, this.props.board);
+  //     }
+  //   })
+  // }
 
 //Plays loop.  input is a buffer list of sounds and a speed variable.
 //BPM is beats per minute
@@ -77,10 +58,10 @@ class Player extends Component {
   }
 
   playSound(buffer, time) {
-    var source = this.state.context.createBufferSource();
+    var source = context.createBufferSource();
     source.buffer = buffer;
-    source.connect(this.state.context.destination);
-    source.start(this.state.context.currentTime + time);
+    source.connect(context.destination);
+    source.start(context.currentTime + time);
   }
 	
   toggleStop() {
@@ -90,12 +71,8 @@ class Player extends Component {
   }
 
   toggleStart() {
-    if (this.state.looping) return;
-    this.setState({
-      looping: true
-    }, () => {
-      this.playLoop(this.state.bufferList, this.state.bpm, this.props.board)
-    })
+    console.log("buffer list available to toggleStart", bufferList)
+    this.playLoop(bufferList, this.state.bpm, this.props.board)
   }
 
 	render() {
