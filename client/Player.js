@@ -73,9 +73,17 @@ class Player extends Component {
 
 	render() {
 		return (
-			<div>
-      <button onClick={this.toggleStop}>click here to stop</button>
-			<button onClick={this.toggleStart}>click here to start</button>
+			<div className = "buttonWrapper">
+
+        <button onClick={this.toggleStop}>
+          <img src="../assets/Stop.svg" width="150" height="150"  />
+        </button>
+
+
+        <button onClick={this.toggleStart}>
+            <img src="../assets/Play.svg" width="150" height="150"  />
+        </button>
+
 			</div>
 		)
 	}

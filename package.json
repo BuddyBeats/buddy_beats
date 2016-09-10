@@ -29,6 +29,7 @@
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "jquery": "^3.1.0",
+    "material-design-lite": "^1.2.1",
     "mongodb": "^2.2.9",
     "mongoose": "^4.6.0",
     "nodemon": "^1.10.2",

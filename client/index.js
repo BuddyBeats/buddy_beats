@@ -129,11 +129,12 @@ class App extends Component {
 		return (
 			<div>
 				<h1>Buddy Beats</h1>
-        <Selector dropdownValue={this.state.dropdownValue} boards={this.state.otherBoards} changeBoard={this.changeBoard}> </Selector>
-        <form className = "saveform" onSubmit = {this.handleSubmit}>
-          <input type="text" ref="textinput" required={true} onChange={this.handleBoardNameChange} placeholder="Name your board!" />
-          <input type="submit" placeholder="Save Board" required = {true} />
+        
+        <form className="saveform" onSubmit = {this.handleSubmit}>    
+          <input type="text" className="mdl-textfield__input" ref="textinput" required={true} onChange={this.handleBoardNameChange} placeholder="Name your board!" />
+          <input id = "submitButton" type="submit" placeholder="Save Board" required = {true} />
         </form>
+        <Selector dropdownValue={this.state.dropdownValue} boards={this.state.otherBoards} changeBoard={this.changeBoard}> </Selector>
 				<Board boxState = {this.state.board} toggle ={this.toggle}/>
         <Player board={this.state.board} />
 			</div>

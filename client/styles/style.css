@@ -1,3 +1,85 @@
 .btn:focus {
   outline: none;
+
 }
+
+.btn {
+    border:  none;
+    outline: white 1px;
+       border-radius: 10px;
+       padding: 1px;
+       margin: 1px;
+}
+
+
+
+.saveform {
+  text-color:blue;
+  width: 200px;
+}
+
+h1{
+  color:lightseagreen;
+  text-align: center;
+}
+
+.board{
+  width: 1216px;
+  margin: 0 auto;
+}
+
+button{
+  background-color: white;
+  border: none;
+   /*margin: 0 auto;*/
+}
+
+#submitButton{
+  height: 50px;
+}
+
+.buttonWrapper{
+  margin-left: 1138px;
+  
+}
+
+input[type=submit] {
+    width:400px;
+    margin-left:400px;
+    margin-top:4px;
+    max-height:50px;
+    padding:5px 15px; 
+    font-size: 20px;
+    /*background:#ccc; */
+    border:0 none;
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+}
+
+input[type=text] {
+    width:400px;
+    margin-left:400px;
+    height: 40px;
+    font-size: 20px;
+    padding:5px 15px; 
+    background:#ccc; 
+    border:0 none;
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+}
+
+select {
+    width:400px;
+    height: 40px;
+    font-size: 20px;
+    margin-left:400px;
+    margin-bottom: 5px;
+    padding:5px 15px; 
+    background:#ccc; 
+    border:0 none;
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+  }
