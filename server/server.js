@@ -6,7 +6,9 @@ const userController = require('./controllers/userController');
 const boardController = require('./controllers/boardController');
 
 var app = express();
+var http = require('http').Server(app);
 
+var io = require('socket.io')(http);
 const mongoose = require('mongoose');
 
 
@@ -31,7 +33,13 @@ app.get('/', function(req, res) {
     res.send('hello world');
 });
 
-
+io.on('connection', function(socket){
+    socket.on('toggle', function(arr){
+        console.log('toggle was clicked', arr);
+        socket.broadcast.emit('togglereturn', arr);
+    });
+    console.log('a user connnected');
+});
 app.post('/saveBoard', boardController.saveBoard , function(req,res,next){
     
     res.status(200);
@@ -57,6 +65,6 @@ app.get('/getBoards', boardController.getBoards, function(req,res,next){
 
 
 //THIS HAS TO BE DOWN HERE OMG THAT WAS MY PROBLEM ALL ALONG
-app.listen(3000,function(){
+http.listen(3000,function(){
   console.log("Started on PORT 3000");
-})
+});

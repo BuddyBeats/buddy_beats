@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Board from './Board';
 import Player from './Player';
-
+var socket = io();
 
 class App extends Component {
   constructor() {
@@ -19,10 +19,12 @@ class App extends Component {
     this.toggle = this.toggle.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleBoardNameChange = this.handleBoardNameChange.bind(this);
+    this.catchToggle = this.catchToggle.bind(this);
   }
 
   //alters color of each button on click
   toggle(row, col){
+    socket.emit('toggle', [row, col, this.state.board[row][col]]);
     var copy = this.state.board.slice();
     if (copy[row][col] === 0) {
       copy[row][col] = 1;
@@ -37,19 +39,27 @@ class App extends Component {
   handleSubmit(e){
     e.preventDefault();
     
-    $.post('/saveBoard',{name: this.state.boardname, board: this.state.board}, function(){
-      console.log('successful save');
-    });
+    // $.post('/saveBoard',{name: this.state.boardname, board: this.state.board}, function(){
+    //   console.log('successful save');
+    // });
   }
   handleBoardNameChange(e){
     this.setState({boardname: e.target.value})
   }
   componentDidMount(){
-    $.get('/getBoards', function(result){
-      console.log('allboards:', result);
-    });
+    socket.on('togglereturn', this.catchToggle);
   }
+  catchToggle(returnarr){
+    console.log('returnarr in catch toggle', returnarr);
+    console.log('this in catchToggle', this);
+    var copy = this.state.board.slice();
+    var returnRow = returnarr[0];
+    var returnCol = returnarr[1];
+    var returnVal = returnarr[2];
+    copy[returnRow][returnCol] = (returnVal === 0) ? 1 : 0;
+    this.setState({board: copy});
 
+  }
   render() {
 		return (
 			<div>
