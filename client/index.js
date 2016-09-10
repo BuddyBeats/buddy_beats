@@ -10,18 +10,20 @@ class App extends Component {
     this.state = {
       boardname: '',
       board: [
-        [1,0,0,0,1,0,0,0],
-        [0,0,1,0,0,0,1,0],
         [0,0,0,0,0,0,0,0],
-        [0,1,0,1,0,1,0,1]
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0]
       ]
     }
     this.toggle = this.toggle.bind(this);
     this.catchToggle = this.catchToggle.bind(this);
+    this.catchServerBoard = this.catchServerBoard.bind(this);
   }
 
   //alters color of each button on click
   toggle(row, col){
+   
     //emit 'toggle' event on click of each button, passing in the row & col of the button clicked and its value
     socket.emit('toggle', [row, col, this.state.board[row][col]]);
     var copy = this.state.board.slice();
@@ -35,7 +37,14 @@ class App extends Component {
   }
 
   componentDidMount(){
+    //this makes a request to board on server
+    socket.emit('initialclientload');
+    socket.on('sendserverboard', this.catchServerBoard);
     socket.on('togglereturn', this.catchToggle);
+  }
+
+  catchServerBoard(serverBoard){
+    this.setState({board: serverBoard});
   }
 
   catchToggle(returnarr){
