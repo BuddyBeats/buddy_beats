@@ -18,12 +18,14 @@ mongoose.connection.once('open', () => {
 
 
 
-serverBoard = [
+var serverBoard = [
         [0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0]
       ];
+var serverBoardName = '';
+var dropdownValue = 0;
 
 app.use(express.static(__dirname +'./../')); //serves the index.html
 app.use(bodyParser.urlencoded({extended: true}));
@@ -70,6 +72,13 @@ io.on('connection', function(socket){
     socket.broadcast.emit('togglereturn', arr);
   });
   console.log('a user connnected');
+
+  socket.on('boardChange', function(boardArray) {
+    serverBoard = boardArray[1];
+    serverBoardName = boardArray[0];
+    dropdownValue = boardArray[2];
+    socket.broadcast.emit('serverboardchanged', [serverBoard, serverBoardName, dropdownValue])
+  })
 });
 
 

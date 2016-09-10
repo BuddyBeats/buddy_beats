@@ -19,7 +19,8 @@ class App extends Component {
         [0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0]
-      ]
+      ],
+      dropdownValue: 0
     }
     this.toggle = this.toggle.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -27,6 +28,7 @@ class App extends Component {
     this.changeBoard = this.changeBoard.bind(this);
     this.catchToggle = this.catchToggle.bind(this);
     this.catchServerBoard = this.catchServerBoard.bind(this);
+    this.catchServerBoardChange = this.catchServerBoardChange.bind(this);
 
   }
 
@@ -52,14 +54,20 @@ class App extends Component {
     $.post('/saveBoard',{name: that.state.boardname, board: that.state.board}, function(){
       console.log('successful save');
      that.setState({boardname: ""})
-
     });
+    this.refs.textinput.value = "";
+
   }
 
 
+  catchServerBoardChange(serverBoardArr) {
+    console.log("caught serverboardchange", serverBoardArr)
+    this.setState({board: serverBoardArr[0], boardname: serverBoardArr[1], dropdownValue: serverBoardArr[2]})//might be boardname
+  }
 
   componentDidMount(){
     //this makes a request to board on server
+    socket.on('serverboardchanged', this.catchServerBoardChange);
     socket.emit('initialclientload');
     socket.on('sendserverboard', this.catchServerBoard);
     socket.on('togglereturn', this.catchToggle);
@@ -100,11 +108,16 @@ class App extends Component {
   }
 
   changeBoard(e) {
+
     var boardToSet = this.state.otherBoards[e.target.value]
+    socket.emit('boardChange', [boardToSet.name, boardToSet.board, e.target.value]);
+
     this.setState({
       board: boardToSet.board,
-      name: boardToSet.name
+      name: boardToSet.name,
+      dropdownValue: e.target.value
     })
+
     // var newBoard = this.state.otherBoards[1];
 
     // this.setState({
@@ -116,9 +129,9 @@ class App extends Component {
 		return (
 			<div>
 				<h1>Buddy Beats</h1>
-        <Selector boards={this.state.otherBoards} changeBoard={this.changeBoard}> </Selector>
+        <Selector dropdownValue={this.state.dropdownValue} boards={this.state.otherBoards} changeBoard={this.changeBoard}> </Selector>
         <form className = "saveform" onSubmit = {this.handleSubmit}>
-          <input type="text" required={true} value={this.state.boardname} onChange={this.handleBoardNameChange} placeholder="Name your board!" />
+          <input type="text" ref="textinput" required={true} onChange={this.handleBoardNameChange} placeholder="Name your board!" />
           <input type="submit" placeholder="Save Board" required = {true} />
         </form>
 				<Board boxState = {this.state.board} toggle ={this.toggle}/>

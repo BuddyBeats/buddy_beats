@@ -17,9 +17,10 @@ class Board extends Component {
       width: boardWidth + 'px'
     };
 
+    let keyCount = 0;
     for (var r = 0; r < numrows; r++){
       for (var c = 0; c < numcols; c++){
-        boxes.push(<Box boxState = {this.props.boxState} row = {r} col = {c} toggle = {this.props.toggle}/>); 
+        boxes.push(<Box boxState = {this.props.boxState} key={keyCount++} row = {r} col = {c} toggle = {this.props.toggle}/>); 
       }   
     }
 		return (
