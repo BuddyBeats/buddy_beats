@@ -11,10 +11,13 @@ class Board extends Component {
     let boxes = [];
     let numrows = 4;
     let numcols = 8;
-    let boardWidth = (numcols * 150).toString();
+    // let boardWidth = (numcols * 150 + 20).toString(); 
     
     let boardStyle = {
-      width: boardWidth + 'px'
+      
+      // display: "inline-block",
+      // text-align: "center"
+      // boardWidth + 'px'
     };
 
     let keyCount = 0;
@@ -24,7 +27,7 @@ class Board extends Component {
       }   
     }
 		return (
-			<div style = {boardStyle}>
+			<div className = "board" >
         {boxes}
 			</div>
 		)
