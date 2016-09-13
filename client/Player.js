@@ -17,34 +17,27 @@ class Player extends Component {
 //Plays loop.  input is a buffer list of sounds and a speed variable.
 //BPM is beats per minute
   playLoop(bufferList, bpm, board, loop = 0) {
-    //hard coded for 8 columns.  If you want to add more columns, you have to change this
-    let rowLength = 8;
-    let buffLen = bufferList.length;
-    let speedRatio = bpm / 60;
-    // the terminating case for i is hard-coded for 8 columns
-    for (var i = 0; i < 8; i++) {
-      /* These MUST be "==" because loading boards come back with 
-        the values in strings rather than numbers...
-      */
-      if (board[0][i % rowLength] == 1) {
-        this.playSound(bufferList[0], i / speedRatio);
+    let counter = 0;
+    worker.postMessage({type: 'start', bpm: this.state.bpm})
+    worker.onmessage = (e) => {
+      console.log('tick')
+      if (e.data === 'tick') {
+        if (board[0][counter] == 1) {
+          this.playSound(bufferList[0], 0);
+        }
+        if (board[1][counter] == 1) {
+          this.playSound(bufferList[1], 0);
+        }
+        if (board[2][counter] == 1) {
+          this.playSound(bufferList[2], 0);
+        }
+        if (board[3][counter] == 1) {
+          this.playSound(bufferList[3], 0);
+        }
+        counter++
+        console.log(counter)
+        counter = (counter === 16) ? 0 : counter;
       }
-      if (board[1][i % rowLength] == 1) {
-        this.playSound(bufferList[1], i / speedRatio);
-      }
-      if (board[2][i % rowLength] == 1) {
-        this.playSound(bufferList[2], i / speedRatio);
-      }
-      if (board[3][i % rowLength] == 1) {
-        this.playSound(bufferList[3], i / speedRatio);
-      }
-    }
-
-    if (this.state.looping) {
-      //params and timeout hardcoded for 160 bpm with 8 columns.
-      setTimeout(() => {
-          this.playLoop(bufferList, bpm, this.props.board, loop + 8);
-      }, 3000) 
     }
   }
 
@@ -61,9 +54,11 @@ class Player extends Component {
     this.setState({
       looping: false
     })
+    worker.postMessage('stop');
   }
 
   toggleStart() {
+    if (this.state.looping) return;
     this.setState({
       looping: true
     }, () => {
