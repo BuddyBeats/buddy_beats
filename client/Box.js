@@ -7,7 +7,7 @@ class Box extends Component {
     var colorsArr = ["#83BBBC", "EEB937"];
     var boxStyle = {
       height: "150px",
-      width: "150px",
+      width: "75px",
       backgroundColor: colorsArr[this.props.boxState[this.props.row][this.props.col] ]
     }
 		return (

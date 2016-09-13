@@ -35,7 +35,8 @@ class Player extends Component {
           this.playSound(bufferList[3], 0);
         }
         counter++
-        counter = (counter === 8) ? 0 : counter;
+        console.log(counter)
+        counter = (counter === 16) ? 0 : counter;
       }
     }
   }

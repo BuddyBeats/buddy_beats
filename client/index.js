@@ -15,12 +15,13 @@ class App extends Component {
     this.state = {
       boardname: '',
       board: [
-        [0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0]
+        [1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
       ],
-      dropdownValue: 0
+      dropdownValue: 0,
+      bpm: 160
     }
     this.toggle = this.toggle.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -164,13 +165,12 @@ class App extends Component {
 		return (
 			<div>
 				<h1>Buddy Beats</h1>
-        
         <form className="saveform" onSubmit = {this.handleSubmit}>    
           <input type="text" className="mdl-textfield__input" ref="textinput" required={true} onChange={this.handleBoardNameChange} placeholder="Name your board!" />
           <input id = "submitButton" type="submit" placeholder="Save Board" required = {true} />
         </form>        
         <Selector dropdownValue={this.state.dropdownValue} boards={this.state.otherBoards} changeBoard={this.changeBoard}> </Selector>
-				<Board boxState = {this.state.board} toggle ={this.toggle}/>
+				<Board boxState={this.state.board} toggle={this.toggle}/>
         <Player board={this.state.board} />
         <button onClick={this.catchTimestamp}>click me</button>
 			</div>
