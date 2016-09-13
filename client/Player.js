@@ -17,34 +17,8 @@ class Player extends Component {
 //Plays loop.  input is a buffer list of sounds and a speed variable.
 //BPM is beats per minute
   playLoop(bufferList, bpm, board, loop = 0) {
-    // let rowLength = 8;
-    // let buffLen = bufferList.length;
-    // let speedRatio = bpm / 60;
-    // for (var i = 0; i < 8; i++) {
-    //   if (board[0][i % rowLength] == 1) {
-    //     this.playSound(bufferList[0], i / speedRatio);
-    //   }
-    //   if (board[1][i % rowLength] == 1) {
-    //     this.playSound(bufferList[1], i / speedRatio);
-    //   }
-    //   if (board[2][i % rowLength] == 1) {
-    //     this.playSound(bufferList[2], i / speedRatio);
-    //   }
-    //   if (board[3][i % rowLength] == 1) {
-    //     this.playSound(bufferList[3], i / speedRatio);
-    //   }
-    // }
-
-    // if (this.state.looping) {
-    //   //params and timeout hardcoded for 160 bpm with 8 columns.
-    //   setTimeout(() => {
-    //       this.playLoop(bufferList, bpm, this.props.board, loop + 8);
-    //   }, 3000) 
-    // }
-    // this.playSound(bufferList[0], 0)
-    // this.playSound(bufferList[3], 1/3)
     let counter = 0;
-    worker.postMessage('start')
+    worker.postMessage({type: 'start', bpm: this.state.bpm})
     worker.onmessage = (e) => {
       console.log('tick')
       if (e.data === 'tick') {
