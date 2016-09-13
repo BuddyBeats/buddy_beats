@@ -38,5 +38,13 @@
     "react-dom": "^15.3.1",
     "socket.io": "^1.4.8",
     "webpack": "^1.13.2"
+  },
+  "devDependencies": {
+    "bcryptjs": "^2.3.0",
+    "chai": "^3.5.0",
+    "cookie-parser": "^1.4.3",
+    "express-session": "^1.14.1",
+    "mocha": "^3.0.2",
+    "supertest": "^2.0.0"
   }
 }
