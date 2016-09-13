@@ -3,7 +3,7 @@ window.onload = init;
 var context;
 var bufferLoader;
 var bufferList;
-
+var worker = new Worker('client/sound/intervalWorker.js')
 function init() {
   window.AudioContext = window.AudioContext || window.webkitAudioContext;
   context = new AudioContext();
@@ -25,5 +25,6 @@ function init() {
 
 function finishedLoading(buffers) {
 	bufferList = buffers;
+
 }
 

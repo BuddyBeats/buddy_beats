@@ -29,6 +29,7 @@ class App extends Component {
     this.catchToggle = this.catchToggle.bind(this);
     this.catchServerBoard = this.catchServerBoard.bind(this);
     this.catchServerBoardChange = this.catchServerBoardChange.bind(this);
+    this.catchTimestamp = this.catchTimestamp.bind(this);
 
   }
 
@@ -38,13 +39,8 @@ class App extends Component {
     //emit 'toggle' event on click of each button, passing in the row & col of the button clicked and its value
     socket.emit('toggle', [row, col, this.state.board[row][col]]);
     var copy = this.state.board.slice();
-    if (copy[row][col] === 0) {
-      copy[row][col] = 1;
-      this.setState({board: copy});
-    } else {
-      copy[row][col] = 0;
-      this.setState({board: copy});
-    }
+    copy[row][col] = (copy[row][col] === 1) ? 0 : 1;
+    this.setState({board:copy});
   }
 
   //save state of board
@@ -157,6 +153,13 @@ class App extends Component {
     //   board: newBoard.board
     // })
   }
+  catchTimestamp(e) {
+    for (let val of Object.keys(e)) {
+      console.log(val);
+    }
+    console.log(e.timeStamp)
+
+  }
   render() {
 		return (
 			<div>
@@ -169,7 +172,7 @@ class App extends Component {
         <Selector dropdownValue={this.state.dropdownValue} boards={this.state.otherBoards} changeBoard={this.changeBoard}> </Selector>
 				<Board boxState = {this.state.board} toggle ={this.toggle}/>
         <Player board={this.state.board} />
-        
+        <button onClick={this.catchTimestamp}>click me</button>
 			</div>
 		)
   }
